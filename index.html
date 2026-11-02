@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مفرداتي في الإنجليزية 🌸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p900:#3b0764;--p700:#6d28d9;--p600:#7c3aed;--p500:#a855f7;
+  --a600:#db2777;--a500:#ec4899;--a400:#f472b6;--a200:#fbcfe8;--a100:#fce7f3;
+  --pRGB:124,58,237;--aRGB:236,72,153;
+  --card:#ffffff;--ink:#3b0764;--muted:#8b7aa8;
+  --bg1:#fbf5ff;--bg2:#fdf2f8;
+  --blob1:#e9d5ff;--blob2:#fbcfe8;--blob3:#f5d0fe;
+  --line1:#f3e8ff;--line2:#ede9fe;--line3:#e9d5ff;--soft:#fdfcff;
+  --tipbg:linear-gradient(135deg,#fdf4ff,#fff0f6);
+  --icbg:#faf5ff;--ichbg:#f3e8ff;--dangerbg:#ffe4e6;
+  --prbg:#fdf2f8;--prtx:#be185d;
+  --ring:0 10px 30px rgba(var(--pRGB),.12);
+  --grad:linear-gradient(90deg,var(--p600),var(--a500));
+}
+body{
+  font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 55%,var(--bg1) 100%);
+  color:var(--ink);min-height:100vh;padding-bottom:70px;
+  position:relative;overflow-x:hidden;transition:background .4s,color .4s;
+}
+.blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.35;pointer-events:none;z-index:0}
+.b1{width:340px;height:340px;background:var(--blob1);top:-90px;right:-90px}
+.b2{width:300px;height:300px;background:var(--blob2);bottom:8%;left:-110px}
+.b3{width:230px;height:230px;background:var(--blob3);top:42%;left:56%;opacity:.22}
+.container{max-width:880px;margin:0 auto;padding:28px 18px;position:relative;z-index:1}
+
+header{text-align:center;margin-bottom:22px}
+.emojis{font-size:2rem;letter-spacing:.4rem}
+h1{font-size:2.15rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;margin-top:4px}
+.tagline{color:var(--muted);font-weight:700;margin-top:6px;font-size:.98rem}
+.underline{width:140px;height:5px;border-radius:99px;background:var(--grad);margin:12px auto 0}
+
+.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--a200);border-radius:18px;padding:10px 22px;box-shadow:var(--ring);text-align:center;min-width:130px}
+.stat .num{font-size:1.4rem;font-weight:900;color:var(--p600)}
+.stat .lbl{font-size:.8rem;color:var(--muted);font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line1);border-radius:24px;box-shadow:var(--ring)}
+.form-card{padding:22px;margin-bottom:18px;transition:.3s}
+.form-card.editing{border:2px solid var(--a400);box-shadow:0 10px 30px rgba(var(--aRGB),.2)}
+.form-title{font-weight:900;color:var(--p700);margin-bottom:14px;font-size:1.08rem}
+form .row{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-bottom:12px}
+.field label{display:block;font-size:.82rem;font-weight:800;color:var(--p700);margin-bottom:6px}
+.field label .opt{color:var(--muted);font-weight:600;font-size:.74rem}
+.field input{width:100%;border:2px solid var(--line2);border-radius:14px;padding:11px 14px;font-family:inherit;font-size:1rem;color:var(--ink);background:var(--soft);transition:.2s;outline:none}
+.field input:focus{border-color:var(--p500);box-shadow:0 0 0 4px rgba(var(--pRGB),.15);background:var(--card)}
+input[dir="ltr"]{text-align:left}
+.btn-row{display:flex;gap:10px;margin-top:4px}
+.add-btn{flex:1;border:none;border-radius:16px;padding:13px;font-family:inherit;font-size:1.05rem;font-weight:900;color:#fff;background:var(--grad);cursor:pointer;box-shadow:0 8px 20px rgba(var(--aRGB),.3);transition:.2s}
+.add-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(var(--pRGB),.35)}
+#cancelEdit{display:none;border:2px solid var(--a200);background:var(--card);color:var(--p700);border-radius:16px;padding:12px 18px;font-family:inherit;font-weight:800;font-size:.95rem;cursor:pointer;transition:.2s}
+#cancelEdit:hover{background:var(--a100)}
+.form-card.editing #cancelEdit{display:inline-block}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:16px}
+.tip{background:var(--tipbg);border:1.5px dashed var(--a400);border-radius:14px;padding:10px 12px;font-size:.83rem;font-weight:700;color:var(--a600);text-align:center}
+
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+.search{flex:1;min-width:230px;position:relative}
+.search input{width:100%;border:2px solid var(--line2);border-radius:999px;padding:11px 46px 11px 18px;font-family:inherit;font-size:.95rem;font-weight:600;color:var(--ink);background:var(--card);box-shadow:var(--ring);outline:none;transition:.2s}
+.search input:focus{border-color:var(--p500)}
+.search .mag{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none}
+.switch{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--a200);border-radius:999px;padding:8px 16px;box-shadow:var(--ring);cursor:pointer;user-select:none;font-weight:800;font-size:.87rem;color:var(--p700)}
+.switch input{display:none}
+.track{width:44px;height:24px;border-radius:99px;background:var(--line3);position:relative;transition:.25s;flex-shrink:0}
+.track::after{content:'';position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:.25s}
+.switch input:checked + .track{background:var(--grad)}
+.switch input:checked + .track::after{transform:translateX(-20px)}
+
+.day{margin-bottom:28px}
+.day-head{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--grad);color:#fff;border-radius:20px;padding:14px 20px;box-shadow:0 8px 22px rgba(var(--pRGB),.25);flex-wrap:wrap}
+.day-title{font-weight:900;font-size:1.12rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dfull{font-weight:600;font-size:.85rem;opacity:.92}
+.count{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.45);padding:4px 14px;border-radius:999px;font-size:.82rem;font-weight:800;white-space:nowrap}
+.today-chip{background:#fff;color:var(--a600);padding:2px 12px;border-radius:999px;font-size:.78rem;font-weight:900}
+.day.today .day-head{outline:3px solid var(--a200);outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;margin-top:14px}
+
+.word-card{background:var(--card);border:1px solid var(--line1);border-radius:20px;padding:16px 16px 14px;box-shadow:var(--ring);display:flex;flex-direction:column;gap:10px;transition:.2s;animation:pop .35s ease both}
+.word-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(var(--aRGB),.18)}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.w-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.w-en{font-size:1.32rem;font-weight:900;color:var(--p700);word-break:break-word;line-height:1.35}
+.w-actions{display:flex;gap:6px;flex-shrink:0}
+.icon-btn{border:none;background:var(--icbg);border-radius:10px;width:30px;height:30px;cursor:pointer;font-size:.85rem;transition:.2s;line-height:1}
+.icon-btn:hover{background:var(--ichbg);transform:scale(1.12)}
+.icon-btn.danger:hover{background:var(--dangerbg)}
+.w-pr{background:var(--prbg);color:var(--prtx);border-radius:12px;padding:6px 12px;font-size:.95rem;font-weight:700;align-self:flex-start}
+.w-pr .lbl{font-size:.72rem;opacity:.75;font-weight:800;margin-inline-end:6px}
+.w-meaning{font-size:1.04rem;font-weight:800;color:var(--ink)}
+.w-meaning .lbl{font-size:.72rem;color:var(--muted);font-weight:800;margin-inline-end:6px}
+body.memorize .meaning{filter:blur(7px);cursor:pointer;transition:filter .25s;border-radius:6px}
+body.memorize .meaning.revealed{filter:none}
+.w-btns{display:flex;gap:8px;margin-top:auto}
+.pill{flex:1;border:none;border-radius:12px;padding:9px 6px;font-family:inherit;font-weight:800;font-size:.88rem;cursor:pointer;transition:.2s;color:#fff}
+.pill.audio{background:linear-gradient(90deg,var(--p600),var(--p500))}
+.pill.slow{background:linear-gradient(90deg,var(--a500),var(--a400))}
+.pill:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(var(--pRGB),.3)}
+
+.empty{text-align:center;padding:44px 20px;color:var(--muted);font-weight:800;background:var(--card);border:2px dashed var(--line3);border-radius:22px;margin-bottom:20px}
+
+.footer{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:6px}
+.footer .note{font-size:.83rem;color:var(--muted);font-weight:700;line-height:1.8}
+.fbtns{display:flex;gap:8px;flex-wrap:wrap}
+.ghost-btn{border:2px solid var(--a200);background:var(--card);color:var(--p700);border-radius:12px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:.85rem;cursor:pointer;transition:.2s}
+.ghost-btn:hover{background:var(--a100);border-color:var(--a400)}
+
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(90deg,var(--p700),var(--a600));color:#fff;padding:11px 26px;border-radius:999px;font-weight:800;box-shadow:0 10px 30px rgba(var(--pRGB),.4);opacity:0;pointer-events:none;transition:.3s;z-index:50;font-size:.92rem;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* نافذة التحكم بالألوان */
+#themeBtn{position:fixed;bottom:22px;left:22px;z-index:40;width:52px;height:52px;border:none;border-radius:50%;font-size:1.4rem;cursor:pointer;background:var(--grad);box-shadow:0 8px 20px rgba(var(--aRGB),.4);transition:.25s;color:#fff;line-height:1}
+#themeBtn:hover{transform:scale(1.1) rotate(12deg)}
+#themeOverlay{position:fixed;inset:0;background:rgba(20,10,40,.45);backdrop-filter:blur(3px);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+#themeOverlay[hidden]{display:none}
+.theme-panel{background:var(--card);border:1px solid var(--line1);border-radius:22px;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:20px;width:min(400px,94vw);max-height:88vh;overflow-y:auto;animation:pop .25s ease}
+.tp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.tp-head b{color:var(--p700);font-size:1.05rem;font-weight:900}
+.tp-close{border:none;background:var(--icbg);width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:.85rem;transition:.2s;line-height:1}
+.tp-close:hover{background:var(--ichbg);transform:scale(1.1)}
+.tp-sec{font-size:.82rem;font-weight:800;color:var(--muted);margin:14px 0 8px}
+.tp-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tp-preset{border:2px solid var(--line2);background:var(--soft);border-radius:14px;padding:10px 4px;cursor:pointer;font-family:inherit;font-size:.74rem;font-weight:800;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:7px;transition:.2s}
+.tp-preset:hover{transform:translateY(-2px);border-color:var(--p500)}
+.tp-preset.active{border-color:var(--p600);box-shadow:0 0 0 3px rgba(var(--pRGB),.18)}
+.tp-dot{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.55)}
+.tp-custom{display:flex;gap:10px}
+.tp-custom label{flex:1;background:var(--soft);border:2px solid var(--line2);border-radius:14px;padding:10px;font-size:.78rem;font-weight:800;color:var(--ink);display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.tp-custom input[type=color]{width:100%;height:36px;border:none;border-radius:10px;background:none;cursor:pointer;padding:0}
+.tp-dark{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.88rem;font-weight:800;color:var(--ink);cursor:pointer}
+.tp-dark input{width:18px;height:18px;accent-color:var(--p600)}
+.tp-actions{margin-top:16px;display:flex;justify-content:center}
+.tp-note{margin-top:10px;text-align:center;font-size:.75rem;color:var(--muted);font-weight:700}
+
+@media(max-width:560px){
+  form .row{grid-template-columns:1fr}
+  h1{font-size:1.7rem}
+  .grid{grid-template-columns:1fr}
+  .stat{min-width:100px;padding:8px 14px}
+  #themeBtn{width:46px;height:46px;font-size:1.2rem}
+  .tp-presets{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+<script>
+(function(){
+'use strict';
+var THEME_KEY='myEnglishVocab_theme_v1';
+var PRESETS=[
+  {id:'sakura', name:'بنفسجي ووردي 🌸', primary:'#7c3aed', accent:'#ec4899', dark:false},
+  {id:'sky',    name:'أزرق هادئ 💙',    primary:'#2563eb', accent:'#06b6d4', dark:false},
+  {id:'mint',   name:'أخضر نعناعي 🌿',  primary:'#059669', accent:'#14b8a6', dark:false},
+  {id:'sunset', name:'غروب دافئ 🌅',    primary:'#ea580c', accent:'#f59e0b', dark:false},
+  {id:'fuchsia',name:'وردي فوشيا 💖',   primary:'#db2777', accent:'#a855f7', dark:false},
+  {id:'night',  name:'ليل بنفسجي 🌙',   primary:'#8b5cf6', accent:'#ec4899', dark:true}
+];
+
+function hex2rgb(h){
+  h=String(h||'').replace('#','');
+  if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  return [parseInt(h.slice(0,2),16)||0, parseInt(h.slice(2,4),16)||0, parseInt(h.slice(4,6),16)||0];
+}
+function mix(a,b,t){
+  a=hex2rgb(a); b=hex2rgb(b);
+  return [Math.round(a[0]+(b[0]-a[0])*t), Math.round(a[1]+(b[1]-a[1])*t), Math.round(a[2]+(b[2]-a[2])*t)];
+}
+function rgb(c){ return 'rgb('+c[0]+','+c[1]+','+c[2]+')'; }
+
+function computeVars(primary,accent,dark){
+  var K='#000000', W='#ffffff', v={};
+  v['--pRGB']=hex2rgb(primary).join(',');
+  v['--aRGB']=hex2rgb(accent).join(',');
+  v['--p900']=rgb(mix(primary,K,.55));
+  v['--p700']=rgb(mix(primary,K,.25));
+  v['--p600']=primary;
+  v['--p500']=rgb(mix(primary,W,.18));
+  v['--a600']=rgb(mix(accent,K,.15));
+  v['--a500']=accent;
+  v['--a400']=rgb(mix(accent,W,.25));
+  v['--grad']='linear-gradient(90deg,'+primary+','+accent+')';
+  if(!dark){
+    v['--a200']=rgb(mix(accent,W,.65));
+    v['--a100']=rgb(mix(accent,W,.78));
+    v['--card']='#ffffff';
+    v['--ink']=rgb(mix(primary,K,.5));
+    v['--muted']=rgb(mix(mix(mix(primary,K,.5),'#6b7280',.45),W,.25));
+    v['--bg1']=rgb(mix(primary,W,.95));
+    v['--bg2']=rgb(mix(accent,W,.94));
+    v['--blob1']=rgb(mix(primary,W,.8));
+    v['--blob2']=rgb(mix(accent,W,.78));
+    v['--blob3']=rgb(mix(accent,W,.76));
+    v['--line1']=rgb(mix(primary,W,.93));
+    v['--line2']=rgb(mix(primary,W,.91));
+    v['--line3']=rgb(mix(primary,W,.84));
+    v['--soft']=rgb(mix(primary,W,.985));
+    v['--tipbg']='linear-gradient(135deg,'+rgb(mix(accent,W,.955))+','+rgb(mix(accent,W,.93))+')';
+    v['--icbg']=rgb(mix(primary,W,.96));
+    v['--ichbg']=rgb(mix(primary,W,.91));
+    v['--dangerbg']='#ffe4e6';
+    v['--prbg']=rgb(mix(accent,W,.94));
+    v['--prtx']=rgb(mix(accent,K,.28));
+  }else{
+    v['--a200']=rgb(mix(accent,'#241430',.55));
+    v['--a100']=rgb(mix(accent,'#241430',.4));
+    v['--card']=rgb(mix(primary,'#191327',.9));
+    v['--ink']='#f3eefb';
+    v['--muted']='#b1a3cf';
+    v['--bg1']=rgb(mix(primary,'#0f0b1a',.88));
+    v['--bg2']=rgb(mix(accent,'#150e18',.9));
+    v['--blob1']=rgb(mix(primary,'#0d0a18',.68));
+    v['--blob2']=rgb(mix(accent,'#0d0a18',.7));
+    v['--blob3']=rgb(mix(accent,'#141020',.68));
+    v['--line1']=rgb(mix(primary,'#241b3a',.72));
+    v['--line2']=rgb(mix(primary,'#241b3a',.8));
+    v['--line3']=rgb(mix(primary,'#2e2350',.72));
+    v['--soft']=rgb(mix(primary,'#1c1531',.88));
+    v['--tipbg']='linear-gradient(135deg,'+rgb(mix(accent,'#221430',.88))+','+rgb(mix(accent,'#291631',.84))+')';
+    v['--icbg']=rgb(mix(primary,'#231a3c',.85));
+    v['--ichbg']=rgb(mix(primary,'#322550',.8));
+    v['--dangerbg']='#4a1b22';
+    v['--prbg']=rgb(mix(accent,'#241430',.85));
+    v['--prtx']=rgb(mix(accent,W,.6));
+  }
+  return v;
+}
+
+function loadState(){
+  try{
+    var t=JSON.parse(localStorage.getItem(THEME_KEY));
+    if(t && /^#[0-9a-fA-F]{6}$/.test(t.primary) && /^#[0-9a-fA-F]{6}$/.test(t.accent) && typeof t.dark==='boolean'){
+      return t;
+    }
+  }catch(e){}
+  var d=PRESETS[0];
+  return {id:d.id, primary:d.primary, accent:d.accent, dark:d.dark};
+}
+
+var state=loadState();
+
+function applyTheme(s, skipSave){
+  state=s;
+  var v=computeVars(s.primary,s.accent,s.dark);
+  for(var k in v){ document.documentElement.style.setProperty(k,v[k]); }
+  if(!skipSave){
+    try{ localStorage.setItem(THEME_KEY,JSON.stringify(state)); }catch(e){}
+  }
+}
+applyTheme(state, true);
+
+var toastTimer=null;
+function showToast(msg){
+  var t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ t.classList.remove('show'); },2200);
+}
+
+function markActive(){
+  var btns=document.querySelectorAll('.tp-preset');
+  for(var i=0;i<btns.length;i++){
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-id')===state.id);
+  }
+}
+function syncInputs(){
+  var p=document.getElementById('tpPrimary'), a=document.getElementById('tpAccent'), d=document.getElementById('tpDark');
+  if(p) p.value=state.primary;
+  if(a) a.value=state.accent;
+  if(d) d.checked=!!state.dark;
+  markActive();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  var overlay=document.getElementById('themeOverlay');
+  var btn=document.getElementById('themeBtn');
+  if(!overlay||!btn) return;
+
+  var wrap=document.getElementById('tpPresets');
+  PRESETS.forEach(function(ps){
+    var b=document.createElement('button');
+    b.type='button';
+    b.className='tp-preset';
+    b.setAttribute('data-id',ps.id);
+    b.innerHTML='<span class="tp-dot" style="background:linear-gradient(135deg,'+ps.primary+','+ps.accent+')"></span>'+ps.name;
+    b.addEventListener('click', function(){
+      applyTheme({id:ps.id, primary:ps.primary, accent:ps.accent, dark:ps.dark});
+      syncInputs();
+      showToast('تم تطبيق قالب: '+ps.name+' 🎨');
+    });
+    wrap.appendChild(b);
+  });
+
+  btn.addEventListener('click', function(){
+    overlay.hidden=false;
+    syncInputs();
+  });
+  document.getElementById('themeClose').addEventListener('click', function(){ overlay.hidden=true; });
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.hidden=true; });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape' && !overlay.hidden) overlay.hidden=true;
+  });
+
+  document.getElementById('tpPrimary').addEventListener('input', function(){
+    applyTheme({id:null, primary:this.value, accent:state.accent, dark:state.dark});
+    markActive();
+  });
+  document.getElementById('tpAccent').addEventListener('input', function(){
+    applyTheme({id:null, primary:state.primary, accent:this.value, dark:state.dark});
+    markActive();
+  });
+  document.getElementById('tpDark').addEventListener('change', function(){
+    applyTheme({id:state.id, primary:state.primary, accent:state.accent, dark:this.checked});
+    showToast(this.checked?'الوضع الداكن مفعّل 🌙':'عدنا للوضع الفاتح ☀️');
+  });
+  document.getElementById('tpReset').addEventListener('click', function(){
+    var d=PRESETS[0];
+    applyTheme({id:d.id, primary:d.primary, accent:d.accent, dark:false});
+    syncInputs();
+    showToast('أُعيدت الألوان الافتراضية 🌸');
+  });
+
+  markActive();
+});
+})();
+</script>
+</head>
+<body>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<div class="container">
+  <header>
+    <div class="emojis">📚 ✨ 🌸</div>
+    <h1>مفرداتي في الإنجليزية</h1>
+    <p class="tagline">كل يوم كلمات جديدة… احفظيها واسمعيها وكرّريها 💜</p>
+    <div class="underline"></div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="num" id="sWords">0</div><div class="lbl">إجمالي الكلمات</div></div>
+    <div class="stat"><div class="num" id="sDays">0</div><div class="lbl">أيام الدراسة</div></div>
+    <div class="stat"><div class="num" id="sToday">0</div><div class="lbl">كلمات اليوم</div></div>
+  </section>
+
+  <section class="card form-card" id="formCard">
+    <div class="form-title" id="formTitle">➕ أضيفي كلمات اليوم</div>
+    <form id="addForm" autocomplete="off">
+      <div class="row">
+        <div class="field">
+          <label for="fEn">الكلمة بالإنجليزية</label>
+          <input id="fEn" dir="ltr" placeholder="example: Advice" required>
+        </div>
+        <div class="field">
+          <label for="fAr">الترجمة بالعربية</label>
+          <input id="fAr" placeholder="مثال: نصيحة" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="fPr">طريقة النطق <span class="opt">(اختياري — بالعربي أو رموز لفظية)</span></label>
+          <input id="fPr" placeholder="مثال: أدفَايس">
+        </div>
+        <div class="field">
+          <label for="fDate">يوم الكلمة</label>
+          <input id="fDate" type="date">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="add-btn" id="submitBtn">إضافة الكلمة ➕</button>
+        <button type="button" id="cancelEdit">إلغاء ✖</button>
+      </div>
+    </form>
+    <div class="tips">
+      <div class="tip">🎧 استمعي للكلمة وكرّريها بصوت عالٍ</div>
+      <div class="tip">✍️ اكتبي كل كلمة في جملة من عندك</div>
+      <div class="tip">🔁 راجعي كلمات الأمس قبل الجديدة</div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="search">
+      <input id="searchIn" type="text" placeholder="ابحثي عن كلمة… (عربي أو إنجليزي)">
+      <span class="mag">🔎</span>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="memToggle">
+      <span class="track"></span>
+      وضع الحفظ 🧠
+    </label>
+  </div>
+
+  <main id="days"></main>
+
+  <footer class="card footer">
+    <div class="note">
+      💾 كل كلماتك تُحفظ تلقائيًا في متصفحك على هذا الجهاز.<br>
+      ⬇️ صدّري نسخة احتياطية من وقت لآخر حتى لا تفقدِ كلماتك.
+    </div>
+    <div class="fbtns">
+      <button class="ghost-btn" id="exportBtn">⬇️ تصدير نسخة</button>
+      <button class="ghost-btn" id="importBtn">⬆️ استيراد نسخة</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+    </div>
+  </footer>
+</div>
+
+<button id="themeBtn" aria-label="فتح نافذة التحكم بالألوان" title="التحكم بالألوان 🎨">🎨</button>
+
+<div id="themeOverlay" hidden>
+  <div class="theme-panel" role="dialog" aria-modal="true" aria-label="التحكم في الألوان">
+    <div class="tp-head">
+      <b>🎨 التحكم بالألوان</b>
+      <button type="button" class="tp-close" id="themeClose" aria-label="إغلاق">✖</button>
+    </div>
+    <div class="tp-sec">قوالب جاهزة — اضغطي على ما يعجبك</div>
+    <div class="tp-presets" id="tpPresets"></div>
+    <div class="tp-sec">اختيار ألوانك الخاصة</div>
+    <div class="tp-custom">
+      <label>اللون الأساسي <input type="color" id="tpPrimary" value="#7c3aed"></label>
+      <label>اللون الثانوي <input type="color" id="tpAccent" value="#ec4899"></label>
+    </div>
+    <label class="tp-dark"><input type="checkbox" id="tpDark"> 🌙 تشغيل الوضع الداكن</label>
+    <div class="tp-actions">
+      <button type="button" class="ghost-btn" id="tpReset">↺ إعادة الألوان الافتراضية</button>
+    </div>
+    <div class="tp-note">💾 تُحفظ ألوانك تلقائيًا في متصفحك حتى بعد إغلاق الصفحة</div>
+  </div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+
+var STORE_KEY = 'myEnglishVocab_v1';
+var MEM_KEY = 'myEnglishVocab_memorize';
+var SEED_DATE = '2026-11-02'; /* الاثنين — كلمات اليوم الاثنين */
+
+var SEED = [
+  {en:'Work',               ar:'عمل',          pr:'وِرك'},
+  {en:'Culture',            ar:'ثقافة',        pr:'كَلتشَر'},
+  {en:'Supervisor',         ar:'مشرف',         pr:'سوبرفايزَر'},
+  {en:'Employees',          ar:'موظفون',       pr:'إمبلوييـز'},
+  {en:'Company',            ar:'شركة',         pr:'كَمبَني'},
+  {en:'Behavior',           ar:'سلوك',         pr:'بِهافيَر'},
+  {en:'Advice',             ar:'نصيحة',        pr:'أدفَايس'},
+  {en:'Experience',         ar:'خبرة',         pr:'إكسبيَرينس'},
+  {en:'Office Environment', ar:'بيئة العمل',   pr:'أوفِس إنفايرنمَنت'},
+  {en:'Co-workers',         ar:'زملاء العمل',  pr:'كووِركَرز'}
+];
+
+var words = [];
+var editingId = null;
+var query = '';
+
+var WD = new Intl.DateTimeFormat('ar', {weekday:'long'});
+var DFULL = new Intl.DateTimeFormat('ar', {day:'numeric', month:'long', year:'numeric'});
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function todayKey(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function parseKey(k){
+  var p = k.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+
+function load(){
+  var seeded = false;
+  try{
+    var raw = localStorage.getItem(STORE_KEY);
+    if(raw){
+      var d = JSON.parse(raw);
+      if(Array.isArray(d)){ words = d; return; }
+    }
+  }catch(e){}
+  words = SEED.map(function(s){ return Object.assign({id:uid(), date:SEED_DATE}, s); });
+  save();
+  seeded = true;
+  setTimeout(function(){ toast('جاهزة! أضفت لك كلمات الاثنين تلقائيًا 🌸'); }, 700);
+}
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(words)); }catch(e){}
+}
+
+var toastTimer = null;
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+}
+
+function speak(text, rate){
+  if(!('speechSynthesis' in window)){
+    toast('متصفحك لا يدعم النطق — جرّبي Chrome أو Edge 💜');
+    return;
+  }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = rate;
+  var vs = speechSynthesis.getVoices();
+  var v = vs.find(function(x){ return x.lang === 'en-US'; }) ||
+          vs.find(function(x){ return /^en/i.test(x.lang || ''); });
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+function render(){
+  var days = {};
+  var i, w;
+  for(i = 0; i < words.length; i++){
+    w = words[i];
+    if(!days[w.date]) days[w.date] = [];
+    days[w.date].push(w);
+  }
+  var keys = Object.keys(days).sort(function(a,b){ return b.localeCompare(a); });
+  var q = query.trim().toLowerCase();
+
+  var html = '';
+  var shownDays = 0, shownWords = 0;
+
+  for(var k = 0; k < keys.length; k++){
+    var dateKey = keys[k];
+    var list = days[dateKey];
+    if(q){
+      list = list.filter(function(x){
+        return [x.en, x.ar, x.pr].some(function(f){
+          return (f || '').toLowerCase().indexOf(q) !== -1;
+        });
+      });
+    }
+    if(!list.length) continue;
+    shownDays++; shownWords += list.length;
+
+    var d = parseKey(dateKey);
+    var isToday = dateKey === todayKey();
+
+    html += '<section class="day' + (isToday ? ' today' : '') + '">' +
+      '<div class="day-head">' +
+        '<div class="day-title">' +
+          (isToday ? '<span class="today-chip">اليوم ✨</span>' : '') +
+          '<span>' + WD.format(d) + '</span>' +
+          '<span class="dfull">' + DFULL.format(d) + '</span>' +
+        '</div>' +
+        '<span class="count">' + list.length + ' كلمة</span>' +
+      '</div>' +
+      '<div class="grid">';
+
+    for(i = 0; i < list.length; i++){
+      w = list[i];
+      html += '<article class="word-card" data-id="' + w.id + '">' +
+        '<div class="w-head">' +
+          '<h3 class="w-en" dir="ltr">' + esc(w.en) + '</h3>' +
+          '<div class="w-actions">' +
+            '<button class="icon-btn" data-act="edit" title="تعديل الكلمة">✏️</button>' +
+            '<button class="icon-btn danger" data-act="del" title="حذف الكلمة">🗑️</button>' +
+          '</div>' +
+        '</div>' +
+        (w.pr ? '<div class="w-pr"><span class="lbl">النطق</span><bdi>' + esc(w.pr) + '</bdi></div>' : '') +
+        '<div class="w-meaning"><span class="lbl">المعنى</span><span class="meaning" data-act="reveal">' + esc(w.ar) + '</span></div>' +
+        '<div class="w-btns">' +
+          '<button class="pill audio" data-act="say">🔊 استمع</button>' +
+          '<button class="pill slow" data-act="slow">🐢 ببطء</button>' +
+        '</div>' +
+      '</article>';
+    }
+    html += '</div></section>';
+  }
+
+  if(!shownWords){
+    html = '<div class="empty">' +
+      (words.length === 0
+        ? 'لا توجد كلمات بعد — أضيفي أول كلمة من الأعلى ✨'
+        : 'لا توجد كلمات مطابقة لبحثك 🔍') +
+      '</div>';
+  }
+
+  document.getElementById('days').innerHTML = html;
+
+  document.getElementById('sWords').textContent = words.length;
+  document.getElementById('sDays').textContent = new Set(words.map(function(w){ return w.date; })).size;
+  document.getElementById('sToday').textContent = words.filter(function(w){ return w.date === todayKey(); }).length;
+}
+
+function startEdit(w){
+  editingId = w.id;
+  document.getElementById('fEn').value = w.en;
+  document.getElementById('fAr').value = w.ar;
+  document.getElementById('fPr').value = w.pr || '';
+  document.getElementById('fDate').value = w.date;
+  document.getElementById('submitBtn').textContent = 'حفظ التعديل ✅';
+  document.getElementById('formTitle').textContent = '✏️ تعديل الكلمة: ' + w.en;
+  document.getElementById('formCard').classList.add('editing');
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth', block:'center'});
+  document.getElementById('fEn').focus();
+}
+function cancelEdit(){
+  editingId = null;
+  document.getElementById('submitBtn').textContent = 'إضافة الكلمة ➕';
+  document.getElementById('formTitle').textContent = '➕ أضيفي كلمات اليوم';
+  document.getElementById('formCard').classList.remove('editing');
+}
+
+document.getElementById('days').addEventListener('click', function(e){
+  var btn = e.target.closest('[data-act]');
+  if(!btn) return;
+  var act = btn.getAttribute('data-act');
+  if(act === 'reveal'){ btn.classList.toggle('revealed'); return; }
+  var card = btn.closest('.word-card');
+  if(!card) return;
+  var w = null;
+  for(var i = 0; i < words.length; i++){
+    if(words[i].id === card.getAttribute('data-id')){ w = words[i]; break; }
+  }
+  if(!w) return;
+  if(act === 'say') speak(w.en, 1);
+  else if(act === 'slow') speak(w.en, 0.55);
+  else if(act === 'edit') startEdit(w);
+  else if(act === 'del'){
+    if(confirm('حذف الكلمة "' + w.en + '" نهائيًا؟')){
+      words = words.filter(function(x){ return x.id !== w.id; });
+      if(editingId === w.id) cancelEdit();
+      save(); render();
+      toast('تم حذف الكلمة 🗑️');
+    }
+  }
+});
+
+document.getElementById('addForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var en = document.getElementById('fEn').value.trim();
+  var ar = document.getElementById('fAr').value.trim();
+  var pr = document.getElementById('fPr').value.trim();
+  var date = document.getElementById('fDate').value || todayKey();
+  if(!en || !ar){ toast('اكتبي الكلمة وترجمتها أولًا 🌸'); return; }
+
+  if(editingId){
+    for(var i = 0; i < words.length; i++){
+      if(words[i].id === editingId){
+        words[i].en = en; words[i].ar = ar; words[i].pr = pr; words[i].date = date;
+        break;
+      }
+    }
+    cancelEdit();
+    toast('تم تحديث الكلمة ✅');
+  }else{
+    var dup = words.some(function(w){
+      return w.date === date && w.en.toLowerCase() === en.toLowerCase();
+    });
+    if(dup){ toast('هذه الكلمة موجودة في نفس اليوم بالفعل 💜'); return; }
+    words.push({id:uid(), date:date, en:en, ar:ar, pr:pr});
+    toast('أُضيفت الكلمة إلى ' + WD.format(parseKey(date)) + ' ✨');
+  }
+  save(); render();
+  this.reset();
+  document.getElementById('fDate').value = todayKey();
+  document.getElementById('fEn').focus();
+});
+
+document.getElementById('cancelEdit').addEventListener('click', function(){
+  cancelEdit();
+  document.getElementById('addForm').reset();
+  document.getElementById('fDate').value = todayKey();
+});
+
+document.getElementById('searchIn').addEventListener('input', function(){
+  query = this.value;
+  render();
+});
+
+var memToggle = document.getElementById('memToggle');
+memToggle.addEventListener('change', function(){
+  document.body.classList.toggle('memorize', memToggle.checked);
+  try{ localStorage.setItem(MEM_KEY, memToggle.checked ? '1' : '0'); }catch(e){}
+  toast(memToggle.checked ? 'وضع الحفظ مفعّل — اختبري نفسك 🧠' : 'تم إظهار المعاني 💜');
+});
+
+document.getElementById('exportBtn').addEventListener('click', function(){
+  var blob = new Blob([JSON.stringify(words, null, 2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'my-english-words.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('تم تصدير نسخة احتياطية ⬇️');
+});
+
+document.getElementById('importBtn').addEventListener('click', function(){
+  document.getElementById('importFile').click();
+});
+
+document.getElementById('importFile').addEventListener('change', function(e){
+  var f = e.target.files[0];
+  if(!f) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    try{
+      var arr = JSON.parse(reader.result);
+      var ok = Array.isArray(arr) && arr.every(function(x){
+        return x && typeof x.en === 'string' && typeof x.ar === 'string';
+      });
+      if(!ok) throw new Error('bad');
+      if(confirm('موافق = استبدال كل الكلمات الحالية\nإلغاء = دمج مع الكلمات الحالية')){
+        words = arr.map(function(x){
+          return {id: x.id || uid(), date: x.date || todayKey(), en: x.en, ar: x.ar, pr: x.pr || ''};
+        });
+      }else{
+        var have = {};
+        words.forEach(function(w){ have[w.date + '|' + w.en.toLowerCase()] = 1; });
+        arr.forEach(function(x){
+          var dk = x.date || todayKey();
+          var key = dk + '|' + x.en.toLowerCase();
+          if(!have[key]){
+            words.push({id:uid(), date:dk, en:x.en, ar:x.ar, pr:x.pr || ''});
+            have[key] = 1;
+          }
+        });
+      }
+      save(); render();
+      toast('تم استيراد الكلمات بنجاح ✨');
+    }catch(err){
+      toast('تعذّرت قراءة الملف — تأكدي أنه ملف تصدير صحيح 💜');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(f);
+});
+
+/* init */
+try{
+  if(localStorage.getItem(MEM_KEY) === '1'){
+    memToggle.checked = true;
+    document.body.classList.add('memorize');
+  }
+}catch(e){}
+document.getElementById('fDate').value = todayKey();
+load();
+render();
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); }
+})();
+</script>
+</body>
+</html>
