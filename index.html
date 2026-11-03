@@ -166,8 +166,6 @@ mark.hl{background:rgba(var(--aRGB),.16);color:var(--a500);font-weight:900;paddi
 .pill.sm{flex:0 0 auto;padding:8px 14px;font-size:.85rem}
 .ghost-btn.sm{padding:7px 12px;font-size:.8rem}
 .icon-btn.tr{margin-inline-start:auto}
-.say-ar{display:none}
-body.has-ar-voice .say-ar{display:inline-flex}
 .s-edit{border-top:2px dashed var(--line3);padding-top:12px;display:flex;flex-direction:column;gap:10px}
 .s-edit[hidden]{display:none}
 .s-edit input{width:100%;border:2px solid var(--line2);border-radius:12px;padding:10px 13px;font-family:inherit;font-size:.95rem;color:var(--ink);background:var(--soft);outline:none;transition:.2s}
@@ -448,8 +446,8 @@ document.addEventListener('DOMContentLoaded', function(){
   <div id="viewSents" hidden>
     <div class="card sent-intro">
       💬 كل كلمة داخل جملة مفيدة — <b>الكلمة ملوّنة</b> داخل الجملة، وتحتها ترجمة الجملة بالعربية.<br>
-      🎙️ اضغطي «اسمعي الجملة» لتسمعيها كاملة بصوت طبيعي واضح، أو «ببطء» لتسمعيها بتمهّل.<br>
-      ✍️ الكلمات التي تضيفينها بنفسك: اكتبي لها جملة من عندك وسنلوّن الكلمة تلقائيًا.
+      🎙️ اضغطي «اسمعي الجملة» لتسمعيها كاملة، أو «ببطء» لتسمعيها بتمهّل.<br>
+      🤖 أي كلمة جديدة تضيفينها سأضعها لك تلقائيًا في جملة من عندي — جاهزة مع ترجمتها وزر الاستماع.
       <div id="sentsCount" style="margin-top:6px"></div>
     </div>
     <div class="toolbar">
@@ -552,15 +550,46 @@ function parseKey(k){
   return new Date(+p[0], +p[1]-1, +p[2]);
 }
 
+/* جمل جاهزة تُملأ تلقائيًا بأي كلمة جديدة — تُختار بشكل ثابت لكل كلمة */
+var AUTO_TPL = [
+  {en:'I want to learn more about {w}.',            ar:'أريد أن أتعلم المزيد عن {m}.'},
+  {en:'We talked about {w} in class today.',        ar:'تحدثنا اليوم عن {m} في الصف.'},
+  {en:'My friend asked me about {w}.',              ar:'سألني صديقي عن {m}.'},
+  {en:'I read something interesting about {w}.',    ar:'قرأت شيئًا مثيرًا عن {m}.'},
+  {en:'Every day I learn something new about {w}.', ar:'كل يوم أتعلم شيئًا جديدًا عن {m}.'},
+  {en:'The teacher told us about {w}.',             ar:'أخبرنا المعلم عن {m}.'},
+  {en:'I saw a picture of {w} in my book.',         ar:'رأيت صورة {m} في كتابي.'},
+  {en:'Can you tell me more about {w}?',            ar:'هل يمكنك إخباري المزيد عن {m}؟'},
+  {en:'I will never forget {w}.',                   ar:'لن أنسى {m} أبدًا.'},
+  {en:'Today I wrote a sentence with {w}.',         ar:'اليوم كتبتُ جملة فيها {m}.'}
+];
+function autoSentence(en, ar){
+  var s = String(en || '').toLowerCase(), h = 0;
+  for(var i = 0; i < s.length; i++){ h = (h * 31 + s.charCodeAt(i)) >>> 0; }
+  var t = AUTO_TPL[h % AUTO_TPL.length];
+  return {sEn: t.en.replace('{w}', '{' + en + '}'),
+          sAr: t.ar.replace('{m}', '{' + (ar || en) + '}'),
+          auto: true};
+}
+
 /* استكمال بيانات الجمل لكلمات محفوظة من نسخة سابقة */
+function findSeed(en){
+  var k = String(en || '').toLowerCase();
+  for(var i = 0; i < SEED.length; i++){
+    if(SEED[i].en.toLowerCase() === k) return SEED[i];
+  }
+  return null;
+}
 function migrateSentences(){
-  var byEn = {};
-  SEED.forEach(function(s){ byEn[s.en.toLowerCase()] = s; });
   var changed = false;
   words.forEach(function(w){
     if(!w.sEn && w.en){
-      var s = byEn[w.en.toLowerCase()];
+      var s = findSeed(w.en);
       if(s){ w.sEn = s.sEn; w.sAr = s.sAr; w.aud = s.aud; changed = true; }
+      else{
+        var a = autoSentence(w.en, w.ar);
+        w.sEn = a.sEn; w.sAr = a.sAr; w.auto = true; changed = true;
+      }
     }
   });
   if(changed) save();
@@ -629,30 +658,6 @@ function playAudio(src, rate, card){
     if(curCard) curCard.classList.remove('playing');
     toast('تعذّر تشغيل الصوت — تأكدي من الاتصال بالإنترنت 💜');
   });
-}
-
-/* نطق الترجمة العربية بصوت المتصفح */
-function arVoice(){
-  var vs = speechSynthesis.getVoices();
-  for(var i = 0; i < vs.length; i++){
-    if(/^ar/i.test(vs[i].lang || '')) return vs[i];
-  }
-  return null;
-}
-function speakAr(text){
-  if(!('speechSynthesis' in window)){ toast('متصفحك لا يدعم النطق 💜'); return; }
-  var v = arVoice();
-  if(!v){ toast('لا يوجد صوت عربي في متصفحك — جرّبي Chrome 💜'); return; }
-  speechSynthesis.cancel();
-  var u = new SpeechSynthesisUtterance(text);
-  u.lang = v.lang;
-  u.voice = v;
-  u.rate = .95;
-  speechSynthesis.speak(u);
-}
-function refreshArBtns(){
-  var has = ('speechSynthesis' in window) && !!arVoice();
-  document.body.classList.toggle('has-ar-voice', has);
 }
 
 function render(){
@@ -816,7 +821,6 @@ function renderSents(){
             '<div class="s-btns">' +
               '<button class="pill audio sm" data-sact="play">🔊 اسمعي الجملة</button>' +
               '<button class="pill slow sm" data-sact="slow">🐢 ببطء</button>' +
-              '<button class="pill audio sm say-ar" data-sact="sayar">📢 الترجمة عربي</button>' +
               '<button class="icon-btn tr" data-sact="editsent" title="تعديل الجملة والترجمة">✏️</button>' +
             '</div>'
           : '<div class="s-empty-note">✍️ اكتبي جملة من عندك تحتوي هذه الكلمة…<br>سنلوّن الكلمة تلقائيًا ونضيف زر استماع</div>' +
@@ -906,7 +910,23 @@ document.getElementById('addForm').addEventListener('submit', function(e){
   if(editingId){
     for(var i = 0; i < words.length; i++){
       if(words[i].id === editingId){
+        var chEn = words[i].en.toLowerCase() !== en.toLowerCase();
+        var chAr = words[i].ar !== ar;
         words[i].en = en; words[i].ar = ar; words[i].pr = pr; words[i].date = date;
+        if(chEn){
+          var sd = findSeed(en);
+          if(sd){ words[i].sEn = sd.sEn; words[i].sAr = sd.sAr; words[i].aud = sd.aud; words[i].auto = false; }
+          else{
+            words[i].aud = '';
+            if(words[i].auto || !(words[i].sEn && words[i].sEn.trim())){
+              var a1 = autoSentence(en, ar);
+              words[i].sEn = a1.sEn; words[i].sAr = a1.sAr; words[i].auto = true;
+            }
+          }
+        }else if(chAr && words[i].auto){
+          var a2 = autoSentence(en, ar);
+          words[i].sEn = a2.sEn; words[i].sAr = a2.sAr;
+        }
         break;
       }
     }
@@ -917,8 +937,10 @@ document.getElementById('addForm').addEventListener('submit', function(e){
       return w.date === date && w.en.toLowerCase() === en.toLowerCase();
     });
     if(dup){ toast('هذه الكلمة موجودة في نفس اليوم بالفعل 💜'); return; }
-    words.push({id:uid(), date:date, en:en, ar:ar, pr:pr});
-    toast('أُضيفت الكلمة إلى ' + WD.format(parseKey(date)) + ' ✨');
+    var a = autoSentence(en, ar);
+    words.push({id:uid(), date:date, en:en, ar:ar, pr:pr,
+                sEn:a.sEn, sAr:a.sAr, aud:'', auto:true});
+    toast('أُضيفت الكلمة مع جملة من عندي إلى ' + WD.format(parseKey(date)) + ' ✨');
   }
   save(); render(); renderSents();
   this.reset();
@@ -957,8 +979,6 @@ document.getElementById('sentDays').addEventListener('click', function(e){
     }else{
       speak(w.sEn.replace(/[{}]/g, ''), act === 'slow' ? .55 : 1);
     }
-  }else if(act === 'sayar'){
-    if(w.sAr) speakAr(w.sAr.replace(/[{}]/g, ''));
   }else if(act === 'editsent'){
     box.querySelector('.sEnIn').value = w.sEn || '';
     box.querySelector('.sArIn').value = w.sAr || '';
@@ -975,9 +995,9 @@ document.getElementById('sentDays').addEventListener('click', function(e){
       if(SEED[j].en.toLowerCase() === w.en.toLowerCase()){ seed = SEED[j]; break; }
     }
     if(seed && seed.sEn === se){
-      w.sEn = seed.sEn; w.sAr = seed.sAr; w.aud = seed.aud;
+      w.sEn = seed.sEn; w.sAr = seed.sAr; w.aud = seed.aud; w.auto = false;
     }else{
-      w.sEn = se; w.sAr = sa; w.aud = '';
+      w.sEn = se; w.sAr = sa; w.aud = ''; w.auto = false;
     }
     save(); renderSents();
     toast('تم حفظ الجملة — اسمعيها الآن 🔊');
@@ -1081,10 +1101,8 @@ load();
 render();
 renderSents();
 if('speechSynthesis' in window){
-  speechSynthesis.getVoices();
-  speechSynthesis.onvoiceschanged = refreshArBtns;
+  speechSynthesis.getVoices(); /* تسخين قائمة الأصوات لكلمات مُضافة لاحقًا */
 }
-refreshArBtns();
 })();
 </script>
 </body>
