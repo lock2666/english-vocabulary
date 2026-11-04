@@ -184,6 +184,49 @@ mark.hl{background:rgba(var(--aRGB),.16);color:var(--a500);font-weight:900;paddi
   .tab{padding:9px 18px;font-size:.88rem}
   .s-en{font-size:.98rem}
 }
+
+/* ===== صفحتا المحادثة (نصية + صوتية) ===== */
+.chat-card{padding:16px;display:flex;flex-direction:column;gap:12px}
+.chat-log{display:flex;flex-direction:column;gap:10px;min-height:260px;max-height:54vh;overflow-y:auto;padding:6px 4px}
+.msg{max-width:84%;padding:10px 14px;border-radius:18px;font-size:.95rem;line-height:1.8;box-shadow:var(--ring);animation:msgpop .25s ease;word-wrap:break-word}
+.msg.ai{align-self:flex-start;background:var(--card);border:1px solid var(--line1);border-start-end-radius:6px;color:var(--ink)}
+.msg.me{align-self:flex-end;background:var(--grad);color:#fff;border-start-start-radius:6px}
+.msg.live{opacity:.75;font-style:italic}
+.msg mark.hl{background:var(--a100);color:var(--a600);border-radius:6px;padding:0 4px}
+.msg.me mark.hl{background:rgba(255,255,255,.28);color:#fff}
+.m-ar{display:block;font-size:.8rem;font-weight:700;opacity:.78;margin-top:4px}
+.msg .replay{border:none;background:var(--icbg);color:var(--p700);border-radius:8px;font-size:.74rem;font-weight:800;padding:4px 10px;cursor:pointer;margin-top:6px;font-family:inherit}
+.msg .replay:hover{background:var(--ichbg)}
+.msg.me .replay{background:rgba(255,255,255,.22);color:#fff}
+@keyframes msgpop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.typing{align-self:flex-start;background:var(--card);border:1px solid var(--line1);border-start-end-radius:6px;border-radius:18px;padding:13px 16px;display:flex;gap:5px;box-shadow:var(--ring)}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--p500);animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1.15)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{border:2px dashed var(--line3);background:var(--icbg);color:var(--p700);border-radius:999px;padding:8px 14px;font-family:inherit;font-weight:800;font-size:.82rem;cursor:pointer;transition:.2s}
+.chip:hover{background:var(--ichbg);transform:translateY(-2px)}
+.chat-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chat-bar input{flex:1;min-width:160px;border:2px solid var(--line2);border-radius:14px;padding:12px 14px;font-family:inherit;font-size:1rem;background:var(--card);color:var(--ink)}
+.chat-bar input:focus{outline:none;border-color:var(--p500)}
+.send-btn{border:none;background:var(--grad);color:#fff;font-family:inherit;font-weight:900;font-size:.95rem;border-radius:14px;padding:12px 20px;cursor:pointer;box-shadow:0 8px 20px rgba(var(--pRGB),.3);transition:.2s;white-space:nowrap}
+.send-btn:hover{transform:translateY(-2px)}
+.tool-btn{border:2px solid var(--line2);background:var(--card);color:var(--p700);font-family:inherit;font-weight:800;font-size:.85rem;border-radius:12px;padding:9px 14px;cursor:pointer;transition:.2s}
+.tool-btn:hover{background:var(--ichbg)}
+.tool-btn.on{background:var(--grad);color:#fff;border-color:transparent}
+.voice-panel{display:flex;flex-direction:column;align-items:center;gap:16px;padding:26px 16px;text-align:center}
+.avatar{width:74px;height:74px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.1rem;box-shadow:0 10px 26px rgba(var(--pRGB),.35)}
+.orb{width:112px;height:112px;border-radius:50%;border:none;background:var(--grad);color:#fff;font-size:2.7rem;cursor:pointer;box-shadow:0 12px 30px rgba(var(--pRGB),.4);transition:.25s;display:flex;align-items:center;justify-content:center}
+.orb:hover{transform:scale(1.06)}
+.orb.listening{animation:pulse 1.4s infinite;background:linear-gradient(90deg,var(--a600),var(--a400))}
+.orb.speaking{animation:pulse 1s infinite;background:linear-gradient(90deg,var(--p700),var(--p500))}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(var(--pRGB),.45)}70%{box-shadow:0 0 0 26px rgba(var(--pRGB),0)}100%{box-shadow:0 0 0 0 rgba(var(--pRGB),0)}}
+.v-status{font-weight:900;color:var(--p700);font-size:1rem}
+.v-controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.voice-sel{border:2px solid var(--line2);border-radius:12px;padding:9px 10px;font-family:inherit;font-weight:700;font-size:.85rem;background:var(--card);color:var(--ink);max-width:250px}
+.voice-sel:focus{outline:none;border-color:var(--p500)}
+.center-row{text-align:center}
 </style>
 <script>
 (function(){
@@ -384,6 +427,8 @@ document.addEventListener('DOMContentLoaded', function(){
   <nav class="tabs" role="tablist" aria-label="الأقسام">
     <button type="button" class="tab active" data-tab="words" role="tab" aria-selected="true">📝 الكلمات</button>
     <button type="button" class="tab" data-tab="sents" role="tab" aria-selected="false">💬 الجمل والاستماع</button>
+    <button type="button" class="tab" data-tab="chat" role="tab" aria-selected="false">🗣️ المحادثة</button>
+    <button type="button" class="tab" data-tab="voice" role="tab" aria-selected="false">🎤 محادثة صوتية</button>
   </nav>
 
   <div id="viewWords">
@@ -457,6 +502,48 @@ document.addEventListener('DOMContentLoaded', function(){
       </div>
     </div>
     <main id="sentDays"></main>
+  </div>
+
+  <div id="viewChat" hidden>
+    <div class="card sent-intro">
+      🗣️ هذه <b>ليلي</b> — صديقتك الذكية للمحادثة بالإنجليزية عن موضوع هذا الأسبوع (العمل والمكتب).<br>
+      ✍️ اكتبي بالإنجليزية وسترد عليك فورًا مع ترجمة ردها، وستلوّن كلمات الأسبوع داخل كلامها.<br>
+      💡 اضغطي على أي اقتراح بالأسفل لتبدئي، أو «🎯 اختبريني» لتختبر معاني كلماتك، وكل رد فيه زر 🔊 لسماعه.
+    </div>
+    <div class="card chat-card">
+      <div class="chat-log" id="chatLog"></div>
+      <div class="chips" id="chatChips"></div>
+      <div class="chat-bar">
+        <input id="chatIn" dir="auto" placeholder="اكتبي رسالتك بالإنجليزية…">
+        <button class="send-btn" id="chatSend">إرسال ➤</button>
+      </div>
+      <div class="center-row">
+        <button class="tool-btn" id="chatClear">🧹 محادثة جديدة</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewVoice" hidden>
+    <div class="card sent-intro">
+      🎤 محادثة صوتية حقيقية مع ليلي عن نفس الموضوع! اضغطي الزر وتكلمي بالإنجليزية، وستسمعين ردها <b>بأجود صوت بشري متاح في متصفحك</b> (أصوات Natural / Neural الطبيعية أولاً).<br>
+      1️⃣ اضغطي الزر واسمحي بالميكروفون &nbsp; 2️⃣ تكلمي بالإنجليزية &nbsp; 3️⃣ استمعي للرد — و«الحديث التلقائي» يجعل المحادثة تتبادل تلقائيًا مثل مكالمة حقيقية.<br>
+      🌟 للحصول على أفضل صوت بشري استخدمي Chrome أو Edge، واختاري الصوت من القائمة.
+    </div>
+    <div class="card voice-panel">
+      <div class="avatar">👩‍🏫</div>
+      <div class="v-status" id="vStatus">اضغطي الميكروفون وابدئي الحديث 💜</div>
+      <button class="orb" id="micOrb" aria-label="اضغطي للحديث">🎤</button>
+      <div class="v-controls">
+        <button class="tool-btn on" id="autoTalk">🔁 حديث تلقائي</button>
+        <button class="tool-btn" id="rateBtn">🐢 بطيء</button>
+        <select class="voice-sel" id="voiceSel" aria-label="اختيار صوت ليلي"></select>
+        <button class="tool-btn" id="voiceClear">🧹 تفريغ المحادثة</button>
+      </div>
+      <div class="v-note" id="vNote">💡 جرّبي أن تقولي: «I go to work early every morning.» — واستخدمي كلمات الأسبوع: Work, Company, Advice, Experience…</div>
+    </div>
+    <div class="card chat-card">
+      <div class="chat-log" id="voiceLog"></div>
+    </div>
   </div>
 
   <footer class="card footer">
@@ -1008,6 +1095,8 @@ document.getElementById('sentDays').addEventListener('click', function(e){
 var tabBtns = document.querySelectorAll('.tab');
 var viewWords = document.getElementById('viewWords');
 var viewSents = document.getElementById('viewSents');
+var viewChat = document.getElementById('viewChat');
+var viewVoice = document.getElementById('viewVoice');
 Array.prototype.forEach.call(tabBtns, function(b){
   b.addEventListener('click', function(){
     var name = b.getAttribute('data-tab');
@@ -1018,7 +1107,11 @@ Array.prototype.forEach.call(tabBtns, function(b){
     });
     viewWords.hidden = name !== 'words';
     viewSents.hidden = name !== 'sents';
+    viewChat.hidden = name !== 'chat';
+    viewVoice.hidden = name !== 'voice';
     if(name === 'sents') renderSents();
+    if(name === 'chat') startChatPage();
+    if(name === 'voice') startVoicePage();
     window.scrollTo({top:0, behavior:'smooth'});
   });
 });
@@ -1087,6 +1180,398 @@ document.getElementById('importFile').addEventListener('change', function(e){
     e.target.value = '';
   };
   reader.readAsText(f);
+});
+
+/* ===== محرك المحادثة الذكي — موضوع الأسبوع: العمل والمكتب ===== */
+var CHAT_AR = /[\u0600-\u06FF]/;
+
+var TOPIC = [
+  {w:'Work', v:['work','job','working'], ar:'العمل',
+   r:[['Work is a big part of our day! What time do you start your work every morning?','العمل جزء كبير من يومنا! في أي وقت تبدئين عملك كل صباح؟'],
+      ['I go to work early every morning. Do you like your work?','أذهب إلى العمل مبكرًا كل صباح. هل تحبين عملك؟']]},
+  {w:'Culture', v:['culture'], ar:'الثقافة',
+   r:[['Team culture makes work fun! What do you like about your company culture?','ثقافة الفريق تجعل العمل ممتعًا! ما الذي يعجبك في ثقافة شركتك؟'],
+      ['A wonderful culture means happy employees. Is the culture in your company good?','الثقافة الرائعة تعني موظفين سعداء. هل الثقافة في شركتك جيدة؟']]},
+  {w:'Supervisor', v:['supervisor','boss'], ar:'المشرف',
+   r:[['My supervisor always supports me. Is your supervisor kind?','مشرفي يدعمني دائمًا. هل مشرفك لطيف؟'],
+      ['A good supervisor helps you grow. What does your supervisor do?','المشرف الجيد يساعدك على التطور. ماذا يفعل مشرفك؟']]},
+  {w:'Employees', v:['employees','employee'], ar:'الموظفون',
+   r:[['The employees attended a training session today. Do you like training with other employees?','حضر الموظفون جلسة تدريب اليوم. هل تحبين التدرب مع الموظفين الآخرين؟'],
+      ['Happy employees make a great company! How are the employees in your company?','الموظفون السعداء يصنعون شركة رائعة! كيف حال الموظفين في شركتك؟']]},
+  {w:'Company', v:['company'], ar:'الشركة',
+   r:[['She has worked at the same company for five years! How long have you been at your company?','عملت في الشركة نفسها منذ خمس سنوات! منذ متى أنت في شركتك؟'],
+      ['Tell me about your company — is it big or small?','أخبريني عن شركتك — هل هي كبيرة أم صغيرة؟']]},
+  {w:'Behavior', v:['behavior','behaviour'], ar:'السلوك',
+   r:[['Good behavior makes the workplace better. Why is good behavior important?','السلوك الجيد يجعل مكان العمل أفضل. لماذا السلوك الجيد مهم برأيك؟'],
+      ['I saw wonderful behavior at the office today. Do people behave kindly with you?','رأيت سلوكًا رائعًا في المكتب اليوم. هل يتعامل الناس معك بلطف؟']]},
+  {w:'Advice', v:['advice','advise'], ar:'النصيحة',
+   r:[['He gave me useful advice about my career. Can you give me one piece of advice?','قدّم لي نصيحة مفيدة عن مسيرتي المهنية. هل تعطينين نصيحة واحدة؟'],
+      ['Good advice is a gift! Who gives you the best advice?','النصيحة الجيدة هدية! من يقدم لك أفضل نصيحة؟']]},
+  {w:'Experience', v:['experience'], ar:'الخبرة',
+   r:[['This job gave me great experience. What experience do you want to get?','هذه الوظيفة منحتني خبرة رائعة. أي خبرة تريدين اكتسابها؟'],
+      ['Experience grows every day at work. What did you learn from your experience this week?','الخبرة تكبر كل يوم في العمل. ماذا تعلمتِ من خبرتك هذا الأسبوع؟']]},
+  {w:'Office Environment', v:['environment','office environment'], ar:'بيئة العمل',
+   r:[['The office environment here is calm and friendly. How is the environment in your office?','بيئة العمل هنا هادئة وودّية. كيف هي البيئة في مكتبك؟'],
+      ['A calm environment helps me think! Do you like your office environment?','البيئة الهادئة تساعدني على التفكير! هل تحبين بيئة مكتبك؟']]},
+  {w:'Co-workers', v:['co-workers','coworkers','co workers','colleagues'], ar:'زملاء العمل',
+   r:[['I enjoy working with my co-workers! Do you enjoy working with your co-workers?','أستمتع بالعمل مع زملائي! هل تستمتعين بالعمل مع زملائك؟'],
+      ['My co-workers are like a team of friends. What do you do with your co-workers at break time?','زملائي مثل فريق من الأصدقاء. ماذا تفعلين مع زملائك وقت الراحة؟']]}
+];
+
+var SMALL = {
+  greet:['Hello! 😊 I am so happy to talk with you. How are you today?','مرحبًا! 😊 يسعدني جدًا الحديث معك. كيف حالك اليوم؟'],
+  how:['I am great, thank you! 💜 Are you ready to practice English with me?','أنا بخير ممتاز، شكرًا! هل أنت جاهزة للتمرن على الإنجليزية معي؟'],
+  thanks:['You are welcome! 💜 Learning together is so much fun.','على الرحب والسعة! التعلم معًا ممتع جدًا.'],
+  bye:['Goodbye! 👋 See you tomorrow — keep practicing!','وداعًا! 👋 أراك غدًا — واصلي التدرب!'],
+  who:['I am Lily 🌸 your English practice friend. I am here to help you use the words of this week in real talk!','أنا ليلي 🌸 صديقتك للتدرب على الإنجليزية. أنا هنا لمساعدتك على استخدام كلمات هذا الأسبوع في حديث حقيقي!'],
+  dunno:['No problem! 😊 Try a simple sentence like: I like my company.','لا مشكلة! 😊 جرّبي جملة بسيطة مثل: I like my company.'],
+  yes:['Wonderful! Tell me more about it 😊','رائع! أخبريني المزيد عن ذلك 😊'],
+  no:['That is okay! 💪 We can practice together step by step.','لا بأس! 💪 يمكننا التدرب معًا خطوة بخطوة.'],
+  arabic:['I love that you wrote in Arabic! 💜 Now try to say it in English — I will help you. For example: I enjoy my work.','يعجبني أنك كتبتِ بالعربية! 💜 الآن جرّبي قولها بالإنجليزية — سأساعدك. مثل: I enjoy my work.']
+};
+
+var FALLBACK = [
+  ['Interesting! 🌸 Tell me more — can you use a word from this week?','شيء مثير! 🌸 أخبريني المزيد — هل تستطيعين استخدام كلمة من كلمات الأسبوع؟'],
+  ['You are doing great! Which word do you like most: Work, Advice or Experience?','أنتِ تعملين بشكل رائع! أي كلمة تحبين أكثر: Work أم Advice أم Experience؟'],
+  ['Nice! 😊 Can you make a sentence with the word Company?','جميل! 😊 هل تستطيعين تكوين جملة بكلمة Company؟'],
+  ['What did you do at work today? Use an English word from our list if you can!','ماذا فعلتِ في العمل اليوم؟ استخدمي كلمة إنجليزية من قائمتنا إن استطعت!'],
+  ['Amazing talk! 💜 Try to say: I enjoy working with my co-workers. Can you say it in your own way?','حديث رائع! 💜 حاولي أن تقولي: I enjoy working with my co-workers. هل تستطيعين قولها بأسلوبك؟']
+];
+
+var PRAISE = ['Great word! 🌟 ', 'Well done! 🌟 ', 'Perfect! 💜 '];
+
+var chatName = '';
+var quiz = null;
+var quizBag = [];
+var topicIdx = {};
+var fbIdx = 0;
+var praiseUsed = {};
+
+function norm(s){
+  return String(s).toLowerCase().replace(/[\u2019\u0027`]/g, '')
+    .replace(/[^a-z\u0600-\u06FF ]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+function stripAl(s){ return String(s).replace(/(^|\s)ال/g, '$1'); }
+function withName(en, ar){
+  var n = chatName || 'friend', na = chatName ? ' يا ' + chatName : '';
+  return {en: en.split('{n}').join(n), ar: ar.split('{n}').join(na)};
+}
+function pick2(list, key){
+  var i = topicIdx[key] || 0;
+  topicIdx[key] = (i + 1) % list.length;
+  return list[i];
+}
+function startQuiz(){
+  if(!quizBag.length){
+    quizBag = SEED.slice();
+    for(var i = quizBag.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1)), tmp = quizBag[i];
+      quizBag[i] = quizBag[j]; quizBag[j] = tmp;
+    }
+  }
+  var s = quizBag.pop();
+  quiz = {w:s.en, m:s.ar};
+  return {en:'Quiz time! 🎯 What does "' + s.en + '" mean in Arabic?', ar:'وقت الاختبار! 🎯 ما معنى «' + s.en + '» بالعربية؟ اكتبي الجواب بالعربية.'};
+}
+
+function aiReply(text){
+  var raw = String(text || '').trim();
+  if(!raw) return {en:'Say something and I will answer 😊', ar:'قولي أي شيء وسأجيبك 😊'};
+  var t = norm(raw);
+
+  if(quiz){
+    var ans = stripAl(norm(quiz.m));
+    var correct = !!ans && stripAl(t).indexOf(ans) !== -1;
+    var giveup = /don t know|do not know|idk|no idea/.test(t) || (CHAT_AR.test(raw) && /(اعرف|عرف)/.test(raw));
+    var q = quiz; quiz = null;
+    if(correct) return withName('Excellent, {n}! 🌟 "' + q.w + '" means "' + q.m + '". You have a great memory!',
+                                'ممتاز{n}! 🌟 «' + q.w + '» تعني «' + q.m + '». ذاكرتك قوية!');
+    if(giveup) return {en:'No worries! 😊 "' + q.w + '" means "' + q.m + '". Listen to its sentence in the sentences page and try again!',
+                       ar:'لا بأس! 😊 «' + q.w + '» تعني «' + q.m + '». استمعي لجملتها في صفحة الجمل وحاولي من جديد!'};
+    return {en:'Hmm, not quite! 🌸 "' + q.w + '" means "' + q.m + '". Try to use it in a sentence!',
+            ar:'ليس تمامًا! 🌸 «' + q.w + '» تعني «' + q.m + '». جرّبي استخدامها في جملة!'};
+  }
+  if(/quiz|اختبر|اختبار/.test(raw)) return startQuiz();
+  if(CHAT_AR.test(raw) && !/[a-z]{2,}/.test(t)) return {en:SMALL.arabic[0], ar:SMALL.arabic[1]};
+  if(/^(bye|goodbye|good bye|see you)/.test(t) || /مع السلامة|السلام عليكم/.test(raw)) return withName('Goodbye, {n}! 👋 See you tomorrow — keep practicing!', 'وداعًا{n}! 👋 أراك غدًا — واصلي التدرب!');
+  if(/thank/.test(t)) return {en:SMALL.thanks[0], ar:SMALL.thanks[1]};
+  if(/how are you|how r u/.test(t)) return {en:SMALL.how[0], ar:SMALL.how[1]};
+  if(/^(hi|hello|hey|good morning|good evening|good afternoon|salam)\b/.test(t) || t.indexOf('hello') !== -1 || t === 'hi')
+    return withName('Hello, {n}! 😊 I am so happy to talk with you. How are you today?', 'مرحبًا{n}! 😊 يسعدني جدًا الحديث معك. كيف حالك اليوم؟');
+  if(/your name|who are you/.test(t)) return {en:SMALL.who[0], ar:SMALL.who[1]};
+  if(/don t understand|do not understand|don t know|do not know|idk|صعبة|ما فهمت|لم افهم/.test(t))
+    return {en:SMALL.dunno[0], ar:SMALL.dunno[1]};
+  var m = raw.match(/my name is ([A-Za-z\u0600-\u06FF ]{2,25})/i) || raw.match(/^i am ([A-Za-z]{2,20})$/i);
+  if(m){
+    chatName = m[1].trim().split(' ')[0];
+    chatName = chatName.charAt(0).toUpperCase() + chatName.slice(1);
+    return withName('Nice to meet you, {n}! 💜 Are you ready to practice English together?', 'تشرفت بمعرفتك{n}! 💜 هل أنت جاهزة لنتمرن على الإنجليزية معًا؟');
+  }
+  if(/^(yes|yeah|sure|ok|okay|of course)/.test(t) || /^(نعم|ايوه|إيوه|أكيد|اكيد|تمام)/.test(raw))
+    return {en:SMALL.yes[0], ar:SMALL.yes[1]};
+  if(/^(no|not really|never)\b/.test(t) || /^(لا|مو|مش)/.test(raw)) return {en:SMALL.no[0], ar:SMALL.no[1]};
+
+  for(var i = 0; i < TOPIC.length; i++){
+    var tp = TOPIC[i];
+    for(var j = 0; j < tp.v.length; j++){
+      if(t.indexOf(tp.v[j]) !== -1){
+        var r = pick2(tp.r, tp.w);
+        var pre = praiseUsed[tp.w] ? '' : pick2(PRAISE, 'pr');
+        praiseUsed[tp.w] = true;
+        return {en: pre + r[0], ar: (pre ? 'أحسنتِ! ' : '') + r[1]};
+      }
+    }
+  }
+  var f = FALLBACK[fbIdx % FALLBACK.length]; fbIdx++;
+  return {en:f[0], ar:f[1]};
+}
+
+/* تلوين كلمات الموضوع داخل أي نص إنجليزي */
+function hlWords(en){
+  var s = esc(en);
+  var vars = [];
+  TOPIC.forEach(function(tp){ tp.v.forEach(function(v){ vars.push(v); }); });
+  vars.sort(function(a, b){ return b.length - a.length; });
+  vars.forEach(function(v){
+    var rx = new RegExp('\\b(' + v.replace(/-/g, '\\-') + ')\\b', 'gi');
+    s = s.replace(rx, '<mark class="hl">$1</mark>');
+  });
+  return s;
+}
+
+/* ===== صفحة المحادثة النصية ===== */
+var chatLog = document.getElementById('chatLog');
+var chatIn = document.getElementById('chatIn');
+var voiceLog = document.getElementById('voiceLog');
+var VOICE_KEY = 'myEnglishVocab_voice';
+var chatStarted = false;
+var voiceStarted = false;
+
+function scrollLog(log){ log.scrollTop = log.scrollHeight; }
+
+function pushMsg(log, side, en, ar, canReplay){
+  var d = document.createElement('div');
+  d.className = 'msg ' + side;
+  var html = hlWords(en);
+  if(ar) html += '<span class="m-ar">' + esc(ar) + '</span>';
+  if(canReplay) html += '<br><button class="replay" data-say="' + esc(en) + '">🔊 اسمعي الرد</button>';
+  d.innerHTML = html;
+  log.appendChild(d);
+  scrollLog(log);
+  return d;
+}
+
+function converse(text, log, speakIt){
+  pushMsg(log, 'me', text, '', false);
+  var tp = document.createElement('div');
+  tp.className = 'typing';
+  tp.innerHTML = '<span></span><span></span><span></span>';
+  log.appendChild(tp);
+  scrollLog(log);
+  setTimeout(function(){
+    if(tp.parentNode) tp.parentNode.removeChild(tp);
+    var r = aiReply(text);
+    pushMsg(log, 'ai', r.en, r.ar, true);
+    if(speakIt) speakReply(r.en);
+  }, 550 + Math.random() * 650);
+}
+
+function startChatPage(){
+  if(chatStarted) return;
+  chatStarted = true;
+  var open = withName('Hi! I am Lily 🌸 your English friend! I love talking about work and office life. What is your name?', 'مرحبًا! أنا ليلي 🌸 صديقتك للإنجليزية! أحب الحديث عن العمل وحياة المكتب. ما اسمك؟');
+  pushMsg(chatLog, 'ai', open.en, open.ar, true);
+  var CHIPS = ['Hi Lily! 👋', 'How are you?', 'Tell me about work', 'I like my company', 'Give me advice 🌟', '🎯 اختبريني', 'Goodbye 👋'];
+  var box = document.getElementById('chatChips');
+  CHIPS.forEach(function(c){
+    var b = document.createElement('button');
+    b.className = 'chip';
+    b.type = 'button';
+    b.textContent = c;
+    b.addEventListener('click', function(){ converse(c, chatLog, false); });
+    box.appendChild(b);
+  });
+}
+document.getElementById('chatSend').addEventListener('click', function(){
+  var v = chatIn.value.trim();
+  if(!v) return;
+  chatIn.value = '';
+  converse(v, chatLog, false);
+});
+chatIn.addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){ e.preventDefault(); document.getElementById('chatSend').click(); }
+});
+document.getElementById('chatClear').addEventListener('click', function(){
+  chatLog.innerHTML = '';
+  chatStarted = false;
+  quiz = null; chatName = ''; praiseUsed = {};
+  startChatPage();
+  toast('محادثة جديدة 🌸');
+});
+
+/* ===== صفحة المحادثة الصوتية ===== */
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+var rec = null, listening = false, speakingNow = false, autoTalk = true, voiceRate = 1;
+var myVoice = null, liveNode = null;
+var micOrb = document.getElementById('micOrb');
+var vStatus = document.getElementById('vStatus');
+var vNote = document.getElementById('vNote');
+var voiceSel = document.getElementById('voiceSel');
+var STATUS_IDLE = 'اضغطي الميكروفون وابدئي الحديث 💜';
+
+function orbState(cls, txt){
+  micOrb.className = 'orb' + (cls ? ' ' + cls : '');
+  if(txt) vStatus.textContent = txt;
+}
+function enVoices(){
+  if(!('speechSynthesis' in window)) return [];
+  var all = speechSynthesis.getVoices(), out = [];
+  for(var i = 0; i < all.length; i++){ if(/^en/i.test(all[i].lang || '')) out.push(all[i]); }
+  return out;
+}
+function scoreVoice(v){
+  var s = 0, n = (v.name || '').toLowerCase();
+  if(n.indexOf('natural') !== -1) s += 6;
+  else if(n.indexOf('neural') !== -1) s += 5;
+  if(n.indexOf('google') !== -1) s += 4;
+  if(/(aria|jenny|michelle|ava|samantha|libby|sonia|emily|serena)/.test(n)) s += 2;
+  if(v.lang === 'en-US') s += 2; else if(/^en-GB/i.test(v.lang)) s += 1;
+  if(v.localService === false) s += 1;
+  return s;
+}
+function loadVoiceSel(){
+  var vs = enVoices();
+  if(!vs.length){ voiceSel.hidden = true; return; }
+  vs.sort(function(a, b){ return scoreVoice(b) - scoreVoice(a); });
+  var saved = null;
+  try{ saved = localStorage.getItem(VOICE_KEY); }catch(e){}
+  voiceSel.innerHTML = '';
+  vs.forEach(function(v, i){
+    var o = document.createElement('option');
+    o.value = v.name;
+    o.textContent = '🎙️ ' + v.name + ' (' + v.lang + ')';
+    voiceSel.appendChild(o);
+    if(saved ? v.name === saved : i === 0) o.selected = true;
+  });
+  myVoice = vs.filter(function(v){ return v.name === voiceSel.value; })[0] || vs[0];
+  voiceSel.hidden = false;
+}
+function speakHuman(text, onend){
+  if(!('speechSynthesis' in window)){ if(onend) onend(); return; }
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = (myVoice && myVoice.lang) || 'en-US';
+  if(myVoice) u.voice = myVoice;
+  u.rate = voiceRate;
+  u.pitch = 1;
+  if(onend){ u.onend = onend; u.onerror = onend; }
+  speechSynthesis.speak(u);
+}
+function speakReply(text){
+  speakingNow = true;
+  orbState('speaking', '🔊 ليلي تتكلم الآن — استمعي جيدًا');
+  speakHuman(text, function(){
+    speakingNow = false;
+    if(autoTalk && !viewVoice.hidden && SR){ setTimeout(startListen, 400); }
+    else orbState('', STATUS_IDLE);
+  });
+}
+function setLive(txt){
+  if(!liveNode){
+    liveNode = document.createElement('div');
+    liveNode.className = 'msg me live';
+    voiceLog.appendChild(liveNode);
+  }
+  if(txt){ liveNode.textContent = txt; scrollLog(voiceLog); }
+  else if(liveNode.parentNode){ liveNode.parentNode.removeChild(liveNode); liveNode = null; }
+}
+function startListen(){
+  if(!SR || listening || speakingNow) return;
+  try{ rec.start(); }catch(e){}
+}
+function initRec(){
+  if(rec || !SR) return;
+  rec = new SR();
+  rec.lang = 'en-US';
+  rec.interimResults = true;
+  rec.continuous = false;
+  rec.onstart = function(){
+    listening = true;
+    orbState('listening', '🎙️ أسمعك الآن — تكلمي بالإنجليزية');
+  };
+  rec.onresult = function(e){
+    var fin = '', inter = '';
+    for(var i = e.resultIndex; i < e.results.length; i++){
+      if(e.results[i].isFinal) fin += e.results[i][0].transcript;
+      else inter += e.results[i][0].transcript;
+    }
+    if(inter) setLive(inter);
+    if(fin){ setLive(''); converse(fin, voiceLog, true); }
+  };
+  rec.onerror = function(e){
+    listening = false;
+    if(e && e.error === 'not-allowed') orbState('', '🚫 اسمحي بالميكروفون من إعدادات المتصفح ثم أعيدي المحاولة');
+    else if(e && e.error === 'no-speech') orbState('', 'لم أسمع شيئًا — اضغطي الزر وتكلمي أقرب للميكروفون 🎤');
+    else orbState('', STATUS_IDLE);
+  };
+  rec.onend = function(){
+    if(listening){ listening = false; orbState('', STATUS_IDLE); }
+  };
+}
+function startVoicePage(){
+  if(voiceStarted) return;
+  voiceStarted = true;
+  if('speechSynthesis' in window){
+    loadVoiceSel();
+    speechSynthesis.onvoiceschanged = loadVoiceSel;
+  }else{
+    vNote.textContent = '🚫 متصفحك لا يدعم النطق — افتحي الصفحة في Chrome أو Edge 💜';
+  }
+  if(!SR){
+    micOrb.style.display = 'none';
+    document.getElementById('autoTalk').style.display = 'none';
+    vNote.textContent = '🚫 التعرف على الصوت غير مدعوم في هذا المتصفح — افتحي الصفحة في Chrome أو Edge لتتحدثي مع ليلي بالصوت 💜';
+  }
+  var open = withName('Hi! I am Lily 🌸 Press the microphone and talk to me in English about work!', 'مرحبًا! أنا ليلي 🌸 اضغطي الميكروفون وتحدثي معي بالإنجليزية عن العمل!');
+  pushMsg(voiceLog, 'ai', open.en, open.ar, true);
+}
+micOrb.addEventListener('click', function(){
+  if(!SR){ toast('الميكروفون يحتاج Chrome أو Edge 💜'); return; }
+  if(speakingNow) speechSynthesis.cancel();
+  if(listening){ listening = false; try{ rec.stop(); }catch(e){} return; }
+  startListen();
+});
+document.getElementById('autoTalk').addEventListener('click', function(){
+  autoTalk = !autoTalk;
+  this.classList.toggle('on', autoTalk);
+  this.textContent = autoTalk ? '🔁 حديث تلقائي' : '⏸️ حديث يدوي';
+  toast(autoTalk ? 'الحديث التلقائي مفعّل — مثل مكالمة حقيقية 🔁' : 'وضع يدوي — اضغطي الميكروفون بعد كل رد 🎤');
+});
+document.getElementById('rateBtn').addEventListener('click', function(){
+  voiceRate = voiceRate === 1 ? .72 : 1;
+  this.textContent = voiceRate === 1 ? '🐢 بطيء' : '⚡ عادي';
+  toast(voiceRate === 1 ? 'سرعة طبيعية ⚡' : 'سرعة بطيئة للتدريب 🐢');
+});
+voiceSel.addEventListener('change', function(){
+  var vs = enVoices();
+  myVoice = vs.filter(function(v){ return v.name === this.value; }.bind(this))[0] || vs[0] || null;
+  try{ localStorage.setItem(VOICE_KEY, this.value); }catch(e){}
+  toast('تم اختيار الصوت 🎙️');
+});
+document.getElementById('voiceClear').addEventListener('click', function(){
+  voiceLog.innerHTML = '';
+  liveNode = null; quiz = null; chatName = ''; praiseUsed = {};
+  voiceStarted = false;
+  startVoicePage();
+  toast('محادثة صوتية جديدة 🎤');
+});
+Array.prototype.forEach.call([chatLog, voiceLog], function(log){
+  log.addEventListener('click', function(e){
+    var b = e.target.closest('.replay');
+    if(!b) return;
+    if(speakingNow) speechSynthesis.cancel();
+    speakHuman(b.getAttribute('data-say'), null);
+  });
 });
 
 /* init */
